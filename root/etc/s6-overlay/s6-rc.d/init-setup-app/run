@@ -10,3 +10,7 @@ ENVIRONMENT APP
 WEBUI_PORTS=${WEBUI_PORTS}
 ----------------------------------------------------------------------
 "
+
+# Ensure the data directory exists and has correct ownership
+mkdir -p "${CONFIG_DIR}/data"
+find "${CONFIG_DIR}/data" \( ! -user hotio -or ! -group hotio \) -exec chown hotio:hotio {} +
