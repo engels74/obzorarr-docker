@@ -7,7 +7,6 @@
 <p align="center">
   <a href="https://github.com/engels74/obzorarr-docker/blob/master/LICENSE"><img src="https://img.shields.io/badge/License%20(Image)-GPL--3.0-orange" alt="License (Image)"></a>
   <a href="https://github.com/engels74/obzorarr"><img src="https://img.shields.io/badge/License%20(App)-AGPL--3.0-blue" alt="License (App)"></a>
-  <a href="https://hub.docker.com/r/engels74/obzorarr"><img src="https://img.shields.io/docker/pulls/engels74/obzorarr.svg" alt="Docker Pulls"></a>
   <a href="https://github.com/engels74/obzorarr/stargazers"><img src="https://img.shields.io/github/stars/engels74/obzorarr.svg" alt="GitHub Stars"></a>
 </p>
 
