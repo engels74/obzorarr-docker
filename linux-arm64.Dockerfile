@@ -1,7 +1,7 @@
 ARG UPSTREAM_IMAGE
 ARG UPSTREAM_DIGEST_ARM64
 
-FROM oven/bun:1-alpine AS builder
+FROM oven/bun:alpine AS builder
 RUN apk add --no-cache curl build-base python3
 ARG VERSION
 ENV COMMIT_TAG=${VERSION}
