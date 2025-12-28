@@ -2,13 +2,13 @@
   "nightly": {
     "description": "Every commit to main",
     "hide": false,
-    "last_updated": "2025-12-28T17:56:22.000Z",
-    "last_updated_url": "https://github.com/engels74/obzorarr-docker/actions/runs/20557400983",
+    "last_updated": "2025-12-28T19:19:05.000Z",
+    "last_updated_url": "https://github.com/engels74/obzorarr-docker/actions/runs/20558314673",
     "latest": false,
     "tags": [
       "nightly",
-      "nightly-83f932f77d5b2bc123dc995aee1e4fa092ca2020",
-      "nightly-408e5b9"
+      "nightly-ee9b000d962f711e83e348da675e6ef1d7538a0d",
+      "nightly-f289d56"
     ]
   },
   "release": {
