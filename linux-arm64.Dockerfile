@@ -6,7 +6,7 @@ RUN apk add --no-cache curl build-base python3
 ARG VERSION
 ENV COMMIT_TAG=${VERSION}
 RUN mkdir /build && \
-    curl -fsSL "https://github.com/engels74/obzorarr/archive/v${VERSION}.tar.gz" | tar xzf - -C "/build" --strip-components=1 && \
+    curl -fsSL "https://github.com/engels74/obzorarr/archive/${VERSION}.tar.gz" | tar xzf - -C "/build" --strip-components=1 && \
     cd /build && \
     bun install --frozen-lockfile && \
     bun run build
@@ -27,7 +27,7 @@ COPY --from=builder /build/drizzle "${APP_DIR}/drizzle"
 COPY --from=builder /build/node_modules "${APP_DIR}/node_modules"
 
 ARG VERSION
-RUN curl -fsSL "https://github.com/engels74/obzorarr/archive/v${VERSION}.tar.gz" | tar xzf - -C "${APP_DIR}" --strip-components=1 && \
+RUN curl -fsSL "https://github.com/engels74/obzorarr/archive/${VERSION}.tar.gz" | tar xzf - -C "${APP_DIR}" --strip-components=1 && \
     echo '{"commitTag": "'"${VERSION}"'"}' > "${APP_DIR}/committag.json" && \
     mkdir -p "${CONFIG_DIR}/data" && \
     rm -rf "${APP_DIR}/data" && ln -s "${CONFIG_DIR}/data" "${APP_DIR}/data" && \
