@@ -14,13 +14,13 @@
   "release": {
     "description": "Releases",
     "hide": false,
-    "last_updated": "2025-12-23T13:46:22.000Z",
-    "last_updated_url": "https://github.com/hotio/seerr/actions/runs/20462020583",
+    "last_updated": "2025-12-29T22:28:47.000Z",
+    "last_updated_url": "https://github.com/engels74/obzorarr-docker/actions/runs/20583962776",
     "latest": true,
     "tags": [
       "release",
-      "release-2.7.3",
-      "release-9bffb63"
+      "release-0.1.0",
+      "release-7015234"
     ]
   }
 }
