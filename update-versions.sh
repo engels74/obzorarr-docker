@@ -35,14 +35,13 @@ echo "$prs" | jq -c '.[]' | while read -r pr; do
     pr_sha=$(echo "$pr" | jq -r '.sha')
     pr_branch=$(echo "$pr" | jq -r '.branch')
 
+    short_sha="${pr_sha:0:7}"
     echo "=== Processing PR #${pr_number} (${pr_branch}): ${pr_sha} ==="
 
-    # Check if we need to update (compare with current VERSION.json)
-    current_version=$(jq -r '.version' VERSION.json 2>/dev/null || echo "")
-    current_branch=$(jq -r '.branch' VERSION.json 2>/dev/null || echo "")
-
-    if [[ "$current_version" == "$pr_sha" && "$current_branch" == "pr-${pr_number}" ]]; then
-        echo "PR #${pr_number} already at ${pr_sha}, skipping"
+    # Check git log to see if we already have a commit for this PR+SHA
+    # This prevents duplicate builds when multiple PRs are processed in sequence
+    if git log --oneline -100 | grep -q "PR update: #${pr_number} => ${short_sha}"; then
+        echo "PR #${pr_number} already built at ${short_sha}, skipping"
         continue
     fi
 
@@ -55,7 +54,7 @@ echo "$prs" | jq -c '.[]' | while read -r pr; do
 
     # Commit and push to trigger build
     git add VERSION.json
-    git commit -m "PR update: #${pr_number} => ${pr_sha:0:7}"
+    git commit -m "PR update: #${pr_number} => ${short_sha}"
     git push
 
     echo "Committed and pushed update for PR #${pr_number}"
