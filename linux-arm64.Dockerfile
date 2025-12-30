@@ -34,3 +34,4 @@ RUN curl -fsSL "https://github.com/engels74/obzorarr/archive/${VERSION}.tar.gz" 
     chmod -R u=rwX,go=rX "${APP_DIR}"
 
 COPY root/ /
+RUN find /etc/s6-overlay/s6-rc.d -name "run*" -execdir chmod +x {} +
