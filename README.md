@@ -27,7 +27,7 @@ To get started with obzorarr using Docker, follow these steps:
     services:
       obzorarr:
         container_name: obzorarr
-        image: ghcr.io/engels74/obzorarr:latest
+        image: ghcr.io/engels74/obzorarr-docker:latest
         ports:
           - 3000:3000
         environment:
