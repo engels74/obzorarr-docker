@@ -35,6 +35,18 @@
       "pr-pr-11-0299c58"
     ]
   },
+  "pr-pr-13": {
+    "description": "Open pull requests",
+    "hide": false,
+    "last_updated": "2026-01-01T12:35:27.000Z",
+    "last_updated_url": "https://github.com/engels74/obzorarr-docker/actions/runs/20638572856",
+    "latest": false,
+    "tags": [
+      "pr-pr-13",
+      "pr-pr-13-af7e545c0bcfe3c02ab2c85c2301e850983d2229",
+      "pr-pr-13-21e9b24"
+    ]
+  },
   "pr-pr-7": {
     "description": "Open pull requests",
     "hide": false,
