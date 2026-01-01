@@ -62,13 +62,13 @@
   "release": {
     "description": "Releases",
     "hide": false,
-    "last_updated": "2026-01-01T01:39:57.000Z",
-    "last_updated_url": "https://github.com/engels74/obzorarr-docker/actions/runs/20630549999",
+    "last_updated": "2026-01-01T12:23:38.000Z",
+    "last_updated_url": "https://github.com/engels74/obzorarr-docker/actions/runs/20638499317",
     "latest": true,
     "tags": [
       "release",
       "release-0.1.5",
-      "release-01b96fa"
+      "release-87f346f"
     ]
   }
 }
