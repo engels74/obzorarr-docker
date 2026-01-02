@@ -11,90 +11,6 @@
       "nightly-f36b3ea"
     ]
   },
-  "pr-pr-10": {
-    "description": "Open pull requests",
-    "hide": false,
-    "last_updated": "2025-12-31T00:37:55.000Z",
-    "last_updated_url": "https://github.com/engels74/obzorarr-docker/actions/runs/20608994706",
-    "latest": false,
-    "tags": [
-      "pr-pr-10",
-      "pr-pr-10-bc16204b08b21023657c2f912478b155b546d3f8",
-      "pr-pr-10-eb8c5f1"
-    ]
-  },
-  "pr-pr-11": {
-    "description": "Open pull requests",
-    "hide": false,
-    "last_updated": "2026-01-01T01:25:14.000Z",
-    "last_updated_url": "https://github.com/engels74/obzorarr-docker/actions/runs/20630365608",
-    "latest": false,
-    "tags": [
-      "pr-pr-11",
-      "pr-pr-11-d46bd0e74d18ca02a75bbad2eb450c5664507f63",
-      "pr-pr-11-0299c58"
-    ]
-  },
-  "pr-pr-13": {
-    "description": "Open pull requests",
-    "hide": false,
-    "last_updated": "2026-01-01T21:21:48.000Z",
-    "last_updated_url": "https://github.com/engels74/obzorarr-docker/actions/runs/20645662293",
-    "latest": false,
-    "tags": [
-      "pr-pr-13",
-      "pr-pr-13-843a95e7500ea7b9b16351d5b015788727ec7edc",
-      "pr-pr-13-857b83a"
-    ]
-  },
-  "pr-pr-14": {
-    "description": "Open pull requests",
-    "hide": false,
-    "last_updated": "2026-01-01T23:57:59.000Z",
-    "last_updated_url": "https://github.com/engels74/obzorarr-docker/actions/runs/20647657693",
-    "latest": false,
-    "tags": [
-      "pr-pr-14",
-      "pr-pr-14-4fbd8e619e380547b92b99d9190ac1485f7e687f",
-      "pr-pr-14-0cd4235"
-    ]
-  },
-  "pr-pr-16": {
-    "description": "Open pull requests",
-    "hide": false,
-    "last_updated": "2026-01-02T10:23:29.000Z",
-    "last_updated_url": "https://github.com/engels74/obzorarr-docker/actions/runs/20655701243",
-    "latest": false,
-    "tags": [
-      "pr-pr-16",
-      "pr-pr-16-814520687bae43511920e1dcb856e8d4ae6d38de",
-      "pr-pr-16-25aef2e"
-    ]
-  },
-  "pr-pr-17": {
-    "description": "Open pull requests",
-    "hide": false,
-    "last_updated": "2026-01-02T11:21:49.000Z",
-    "last_updated_url": "https://github.com/engels74/obzorarr-docker/actions/runs/20656670649",
-    "latest": false,
-    "tags": [
-      "pr-pr-17",
-      "pr-pr-17-3b512fcff31ff4cbcad651da5936abe4f8169b36",
-      "pr-pr-17-2879102"
-    ]
-  },
-  "pr-pr-18": {
-    "description": "Open pull requests",
-    "hide": false,
-    "last_updated": "2026-01-02T11:56:50.000Z",
-    "last_updated_url": "https://github.com/engels74/obzorarr-docker/actions/runs/20657221274",
-    "latest": false,
-    "tags": [
-      "pr-pr-18",
-      "pr-pr-18-adc74b2537248c822548601e1940f1739b919ef3",
-      "pr-pr-18-6fd9590"
-    ]
-  },
   "pr-pr-20": {
     "description": "Open pull requests",
     "hide": false,
@@ -105,30 +21,6 @@
       "pr-pr-20",
       "pr-pr-20-e954bf110850dc036b3ff22f3b3508fb59ab59ec",
       "pr-pr-20-622fbde"
-    ]
-  },
-  "pr-pr-7": {
-    "description": "Open pull requests",
-    "hide": false,
-    "last_updated": "2025-12-30T14:28:35.000Z",
-    "last_updated_url": "https://github.com/engels74/obzorarr-docker/actions/runs/20598733166",
-    "latest": false,
-    "tags": [
-      "pr-pr-7",
-      "pr-pr-7-0036a7eac0da9a3f0205a5fe6da4224ae73bb0e9",
-      "pr-pr-7-27e5a3d"
-    ]
-  },
-  "pr-pr-9": {
-    "description": "Open pull requests",
-    "hide": false,
-    "last_updated": "2025-12-30T14:54:38.000Z",
-    "last_updated_url": "https://github.com/engels74/obzorarr-docker/actions/runs/20599088962",
-    "latest": false,
-    "tags": [
-      "pr-pr-9",
-      "pr-pr-9-94c7371c32f8100df79dab71f58b574f093fdf57",
-      "pr-pr-9-b7be2f8"
     ]
   },
   "release": {
