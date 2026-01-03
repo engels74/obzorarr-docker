@@ -11,6 +11,18 @@
       "nightly-4c25abd"
     ]
   },
+  "pr-pr-24": {
+    "description": "Open pull requests",
+    "hide": false,
+    "last_updated": "2026-01-03T13:47:45.000Z",
+    "last_updated_url": "https://github.com/engels74/obzorarr-docker/actions/runs/20678032577",
+    "latest": false,
+    "tags": [
+      "pr-pr-24",
+      "pr-pr-24-e24fd08d372f911f5a970bcf122482186437fddd",
+      "pr-pr-24-2fd9ac9"
+    ]
+  },
   "release": {
     "description": "Releases",
     "hide": false,
