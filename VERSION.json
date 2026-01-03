@@ -1,5 +1,5 @@
 {
-  "branch": "pr-21",
+  "branch": "pr-22",
   "description": "Open pull requests",
   "latest": false,
   "test_amd64": true,
@@ -9,5 +9,5 @@
   "upstream_digest_arm64": "sha256:278973a015d3b206d6ec40fa69af089b0067da26a93170d4e6438c0a54bde1a9",
   "upstream_image": "ghcr.io/engels74/base-image",
   "upstream_tag": "alpinevpn",
-  "version": "1333adff570431a293d16a88f3e1c438233cdfac"
+  "version": "463e1fbb041ae99cf5551d6d207cdc8400a27dbf"
 }
