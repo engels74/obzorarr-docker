@@ -14,6 +14,22 @@
       ""
     ]
   },
+  "pr-pr-27": {
+    "commit_message": "PR update: #27 => 88171c2",
+    "description": "Open pull requests",
+    "hide": false,
+    "last_updated": "2026-01-04T19:26:08.000Z",
+    "last_updated_url": "https://github.com/engels74/obzorarr-docker/actions/runs/20697956981",
+    "latest": false,
+    "tags": [
+      "pr-pr-27",
+      "pr-pr-27-88171c2f24d08a1eb4f940464a34ad3534e60de9",
+      "pr-pr-27-6b43fc8",
+      "",
+      "",
+      ""
+    ]
+  },
   "release": {
     "description": "Releases",
     "hide": false,
