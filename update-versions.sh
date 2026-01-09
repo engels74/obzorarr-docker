@@ -1,5 +1,7 @@
 #!/bin/bash
-version=$(curl -u "${GITHUB_ACTOR}:${GITHUB_TOKEN}" -fsSL "https://api.github.com/repos/engels74/obzorarr/commits/main" | jq -re .sha) || exit 1
+set -exuo pipefail
+
+version=$(curl -u "${GITHUB_ACTOR}:${GITHUB_TOKEN}" -fsSL "https://api.github.com/repos/engels74/obzorarr/commits/main" | jq -re .sha)
 json=$(cat VERSION.json)
 jq --sort-keys \
     --arg version "${version//v/}" \
