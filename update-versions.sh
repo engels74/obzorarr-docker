@@ -2,12 +2,12 @@
 # Fetches all open PRs from upstream obzorarr repo (excluding dependabot/renovate)
 # For each PR: updates VERSION.json with the PR's commit SHA, commits, and pushes
 # Each push triggers the call-build.yml workflow
-# After processing, cleans up stale PR entries from tags.json on master
+# After processing, cleans up stale PR entries from obzorarr-tags.json on website
 
-set -e
+set -exuo pipefail
 
 #######################################
-# Clean up stale PR entries from tags.json on master branch
+# Clean up stale PR entries from obzorarr-tags.json on website repo
 # Arguments:
 #   $1 - Space-separated list of open PR numbers
 #######################################
@@ -15,26 +15,35 @@ cleanup_tags_json() {
     local open_prs="$1"
 
     echo ""
-    echo "=== Starting tags.json cleanup ==="
+    echo "=== Starting website tags.json cleanup ==="
 
-    # Fetch latest master
-    git fetch origin master:refs/remotes/origin/master 2>/dev/null || {
-        echo "Warning: Failed to fetch master branch, skipping cleanup"
+    # Clone website repo to temporary directory
+    local website_dir
+    website_dir=$(mktemp -d)
+
+    git clone --depth 1 -b master "https://${PERSONAL_TOKEN}@github.com/engels74/website.git" "$website_dir" 2>/dev/null || {
+        echo "Warning: Failed to clone website repo, skipping cleanup"
+        rm -rf "$website_dir"
         return 1
     }
 
-    # Get current tags.json from master
+    local tags_file="${website_dir}/docs/containers/obzorarr-tags.json"
+
+    # Get current tags.json from website
     local tags_json
-    tags_json=$(git show origin/master:tags.json 2>/dev/null) || {
-        echo "Warning: tags.json not found on master, skipping cleanup"
+    if [[ -f "$tags_file" ]]; then
+        tags_json=$(cat "$tags_file")
+    else
+        echo "Warning: obzorarr-tags.json not found on website, skipping cleanup"
+        rm -rf "$website_dir"
         return 1
-    }
+    fi
 
-    # Build array of open PR keys
+    # Build array of open PR keys (format: pr-{number})
     local pr_keys=""
     for pr_num in $open_prs; do
         [[ -n "$pr_keys" ]] && pr_keys="${pr_keys}, "
-        pr_keys="${pr_keys}\"pr-pr-${pr_num}\""
+        pr_keys="${pr_keys}\"pr-${pr_num}\""
     done
 
     # Filter: keep non-PR entries + open PR entries only
@@ -42,54 +51,48 @@ cleanup_tags_json() {
     cleaned_json=$(echo "$tags_json" | jq --argjson open_prs "[$pr_keys]" '
         to_entries |
         map(select(
-            (.key | startswith("pr-pr-") | not) or
+            (.key | startswith("pr-") | not) or
             (.key as $k | $open_prs | any(. == $k))
         )) |
         from_entries
     ') || {
         echo "Error: jq processing failed"
+        rm -rf "$website_dir"
         return 1
     }
 
     # Check if anything changed
     local orig_keys new_keys
-    orig_keys=$(echo "$tags_json" | jq -r 'keys | map(select(startswith("pr-pr-"))) | sort | join(",")')
-    new_keys=$(echo "$cleaned_json" | jq -r 'keys | map(select(startswith("pr-pr-"))) | sort | join(",")')
+    orig_keys=$(echo "$tags_json" | jq -r 'keys | map(select(startswith("pr-"))) | sort | join(",")')
+    new_keys=$(echo "$cleaned_json" | jq -r 'keys | map(select(startswith("pr-"))) | sort | join(",")')
 
     if [[ "$orig_keys" == "$new_keys" ]]; then
         echo "No stale PR entries found"
+        rm -rf "$website_dir"
         return 0
     fi
 
     # Calculate removed count
     local orig_count new_count removed_count
-    orig_count=$(echo "$tags_json" | jq 'keys | map(select(startswith("pr-pr-"))) | length')
-    new_count=$(echo "$cleaned_json" | jq 'keys | map(select(startswith("pr-pr-"))) | length')
+    orig_count=$(echo "$tags_json" | jq 'keys | map(select(startswith("pr-"))) | length')
+    new_count=$(echo "$cleaned_json" | jq 'keys | map(select(startswith("pr-"))) | length')
     removed_count=$((orig_count - new_count))
     echo "Removing ${removed_count} stale PR entries"
 
-    # Use worktree to modify master without switching branches
-    local worktree_dir
-    worktree_dir=$(mktemp -d)
+    # Write cleaned JSON
+    echo "$cleaned_json" > "$tags_file"
 
-    git worktree add --quiet --detach "$worktree_dir" origin/master || {
-        echo "Error: Failed to create worktree"
-        rm -rf "$worktree_dir"
-        return 1
-    }
-
-    # Write cleaned JSON and commit
-    echo "$cleaned_json" > "${worktree_dir}/tags.json"
-
+    # Commit and push
     (
-        cd "$worktree_dir" || exit 1
-        git checkout -b temp-cleanup-branch origin/master 2>/dev/null
-        git add tags.json
-        git commit -m "chore: remove ${removed_count} stale PR tag entries [skip ci]"
+        cd "$website_dir" || exit 1
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+        git add docs/containers/obzorarr-tags.json
+        git commit -m "chore: remove ${removed_count} stale PR tag entries from obzorarr [skip ci]"
 
         # Push with retry for race conditions
         for attempt in 1 2 3; do
-            if git push origin HEAD:master 2>/dev/null; then
+            if git push origin master 2>/dev/null; then
                 echo "Cleanup pushed successfully"
                 exit 0
             fi
@@ -102,9 +105,8 @@ cleanup_tags_json() {
     )
     local result=$?
 
-    # Cleanup worktree
-    git worktree remove --force "$worktree_dir" 2>/dev/null || true
-    rm -rf "$worktree_dir" 2>/dev/null || true
+    # Cleanup
+    rm -rf "$website_dir"
 
     [[ $result -eq 0 ]] && echo "=== Cleanup completed ===" || echo "=== Cleanup failed ==="
     return $result
@@ -120,7 +122,7 @@ prs=$(curl -u "${GITHUB_ACTOR}:${GITHUB_TOKEN}" -fsSL \
     number: .number,
     branch: .head.ref,
     sha: .head.sha
-  }]') || exit 1
+  }]')
 
 count=$(echo "$prs" | jq 'length')
 echo "Found ${count} open PR(s)"
