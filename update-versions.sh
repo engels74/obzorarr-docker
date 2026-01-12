@@ -1,6 +1,6 @@
 #!/bin/bash
 # Fetches all open PRs from upstream obzorarr repo (excluding dependabot/renovate)
-# For each PR: updates VERSION.json with the PR's commit SHA, commits, and pushes
+# For each PR: updates meta.json with the PR's commit SHA, commits, and pushes
 # Each push triggers the call-build.yml workflow
 # After processing, cleans up stale PR entries from obzorarr-tags.json on website
 
@@ -157,15 +157,15 @@ echo "$prs" | jq -c '.[]' | while read -r pr; do
         continue
     fi
 
-    # Update VERSION.json with this PR's info
-    json=$(cat VERSION.json)
+    # Update meta.json with this PR's info
+    json=$(cat meta.json)
     jq --sort-keys \
         --arg version "${pr_sha}" \
         --arg branch "pr-${pr_number}" \
-        '.version = $version | .branch = $branch' <<< "${json}" > VERSION.json
+        '.version = $version | .branch = $branch' <<< "${json}" > meta.json
 
     # Commit and push to trigger build
-    git add VERSION.json
+    git add meta.json
     git commit -m "PR update: #${pr_number} => ${short_sha}"
     git push
 
