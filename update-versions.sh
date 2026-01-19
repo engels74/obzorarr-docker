@@ -113,7 +113,7 @@ cleanup_tags_json() {
 }
 
 # Fetch all open PRs targeting main, excluding bot PRs
-prs=$(curl -u "${GITHUB_ACTOR}:${GITHUB_TOKEN}" -fsSL \
+prs=$(curl -fsSL \
   "https://api.github.com/repos/engels74/obzorarr/pulls?state=open&sort=updated&direction=desc" | \
   jq -c '[.[] | select(
     (.base.ref == "main") and
