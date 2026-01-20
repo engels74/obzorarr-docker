@@ -161,8 +161,8 @@ echo "$prs" | jq -c '.[]' | while read -r pr; do
     json=$(cat meta.json)
     jq --sort-keys \
         --arg version "${pr_sha}" \
-        --arg branch "pr-${pr_number}" \
-        '.version = $version | .branch = $branch' <<< "${json}" > meta.json
+        --arg version_branch "pr-${pr_number}" \
+        '.version = $version | .version_branch = $version_branch' <<< "${json}" > meta.json
 
     # Commit and push to trigger build
     git add meta.json
