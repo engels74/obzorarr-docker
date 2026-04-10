@@ -8,10 +8,17 @@ set -e
 
 umask "${UMASK}"
 
+# Update WEBUI_PORTS if PORT was changed from default
+if [[ "${PORT}" != "3000" ]]; then
+    WEBUI_PORTS="${PORT}/tcp,${PORT}/udp"
+    printf '%s' "${WEBUI_PORTS}" > /var/run/s6/container_environment/WEBUI_PORTS
+fi
+
 echo "
 ----------------------------------------------------------------------
 ENVIRONMENT APP
 ----------------------------------------------------------------------
+PORT=${PORT}
 WEBUI_PORTS=${WEBUI_PORTS}
 ----------------------------------------------------------------------
 "
