@@ -15,9 +15,9 @@ RUN mkdir /build && \
 
 
 FROM ${UPSTREAM_IMAGE}:${UPSTREAM_TAG_SHA}
-EXPOSE 3000
 ARG IMAGE_STATS
-ENV IMAGE_STATS=${IMAGE_STATS} WEBUI_PORTS="3000/tcp,3000/udp"
+ENV IMAGE_STATS=${IMAGE_STATS} PORT=3000 WEBUI_PORTS="3000/tcp,3000/udp"
+EXPOSE ${PORT}
 
 RUN apk add --no-cache curl unzip && \
     curl -fsSL https://bun.sh/install | bash && \
