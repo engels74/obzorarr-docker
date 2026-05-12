@@ -7,7 +7,7 @@
   "test_url": "http://localhost:3000",
   "upstream_image": "ghcr.io/engels74/base-image",
   "upstream_tag": "alpinevpn",
-  "upstream_tag_sha": "alpinevpn-f4e73db",
+  "upstream_tag_sha": "alpinevpn-e3a288b",
   "version": "2eb84ece4a232ce13cf4379f0f2e32e4ad97994e",
   "version_branch": "pr-111"
 }
