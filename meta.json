@@ -9,6 +9,6 @@
   "upstream_tag": "alpinevpn",
   "upstream_tag_sha": "alpinevpn-0f48417",
   "upstream_tag_sha__command": "json=$(cat meta.json) && upstream_image=$(jq -re '.upstream_image' <<< \"${json}\") && upstream_image_base=$(basename \"${upstream_image}\") && upstream_tag=$(jq -re '.upstream_tag' <<< \"${json}\") && tags_json=$(curl -fsSL ${GITHUB_TOKEN:+--header \"Authorization: Bearer ${GITHUB_TOKEN}\"} \"https://engels74.net/containers/${upstream_image_base}-tags.json\") && commit_sha=$(jq -r --arg tag \"${upstream_tag}\" '.[$tag].commit_sha' <<< \"${tags_json}\") && upstream_tag_sha=${upstream_tag}-${commit_sha:0:7} && echo \"${upstream_tag_sha}\"",
-  "version": "04cb8db670cd29d1190748cd2cfd07d3678fd3a6",
+  "version": "f4dc9e53b5722c29b538718d717e44e1b29fef03",
   "version__command": "curl -fsSL ${GITHUB_TOKEN:+--header \"Authorization: Bearer ${GITHUB_TOKEN}\"} \"https://api.github.com/repos/engels74/obzorarr/commits/main\" | jq -re '.sha'"
 }
