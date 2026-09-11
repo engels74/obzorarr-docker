@@ -1,14 +1,14 @@
 {
-  "description": "Every commit to main",
+  "description": "Nightly builds",
   "latest": false,
-  "packages_hash": "9b616e04ffd2febaa7233517935ae8570774710f",
   "test_amd64": true,
   "test_arm64": true,
   "test_url": "http://localhost:3000",
-  "upstream_image": "ghcr.io/engels74/base-image",
+  "upstream_image": "ghcr.io/edbfi/base-image",
   "upstream_tag": "alpinevpn",
-  "upstream_tag_sha": "alpinevpn-7b71c36",
-  "upstream_tag_sha__command": "json=$(cat meta.json) && upstream_image=$(jq -re '.upstream_image' <<< \"${json}\") && upstream_image_base=$(basename \"${upstream_image}\") && upstream_tag=$(jq -re '.upstream_tag' <<< \"${json}\") && tags_json=$(curl -fsSL ${GITHUB_TOKEN:+--header \"Authorization: Bearer ${GITHUB_TOKEN}\"} \"https://engels74.net/containers/${upstream_image_base}-tags.json\") && commit_sha=$(jq -r --arg tag \"${upstream_tag}\" '.[$tag].commit_sha' <<< \"${tags_json}\") && upstream_tag_sha=${upstream_tag}-${commit_sha:0:7} && echo \"${upstream_tag_sha}\"",
-  "version": "eb527938ca6a9868205e4d57cd2fdb9bc77c9887",
-  "version__command": "curl -fsSL ${GITHUB_TOKEN:+--header \"Authorization: Bearer ${GITHUB_TOKEN}\"} \"https://api.github.com/repos/engels74/obzorarr/commits/main\" | jq -re '.sha'"
+  "upstream_tag_sha": "alpinevpn",
+  "upstream_digest_amd64": "sha256:1de40909540896a3bcf7bdfa04ca1b928fe2dbe79997ec426a34d691dbe58de0",
+  "upstream_digest_arm64": "sha256:18ba9321016760dbc3bf332324fe032ade7630622f32a417cf67b263ae8705f5",
+  "version": "2c77c2817cf2d63b76107d1b09369ce7e5e8e99c",
+  "source_sha256": "b873192a1040a6b0c2cee731e369f74264d6f281a49690b7b9095146f09f423f"
 }

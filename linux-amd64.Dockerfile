@@ -2,33 +2,50 @@
 # check=skip=InvalidDefaultArgInFrom
 ARG UPSTREAM_IMAGE
 ARG UPSTREAM_TAG_SHA
+ARG UPSTREAM_DIGEST_AMD64
+ARG BUN_IMAGE=oven/bun:1.4.2-alpine@sha256:d888c0ae6c86d7866ff10c5aafdd9077b36aee6455b33dd270fb93c0dd5cef6f
 
-FROM oven/bun:alpine AS builder
+FROM ${BUN_IMAGE} AS bun
+
+FROM bun AS source
 RUN apk add --no-cache curl
 ARG VERSION
+ARG SOURCE_SHA256
+RUN mkdir /source && \
+    curl -fsSL "https://github.com/edbfi/obzorarr/archive/${VERSION}.tar.gz" -o /tmp/source.tar.gz && \
+    echo "${SOURCE_SHA256}  /tmp/source.tar.gz" | sha256sum -c - && \
+    tar xzf /tmp/source.tar.gz -C /source --strip-components=1 && \
+    rm /tmp/source.tar.gz
+
+FROM bun AS dependencies
+WORKDIR /build
+COPY --from=source /source/package.json /source/bun.lock /source/bunfig.toml ./
+# Defer project preparation until source is present; dependency install scripts stay enabled.
+RUN bun -e 'const p = await Bun.file("package.json").json(); delete p.scripts.prepare; delete p.scripts.postinstall; await Bun.write("package.json", JSON.stringify(p));'
+RUN bun install --frozen-lockfile
+
+FROM dependencies AS builder
+COPY --from=source /source/ ./
+ARG VERSION
 ENV COMMIT_TAG=${VERSION}
-RUN mkdir /build && \
-    curl -fsSL "https://github.com/engels74/obzorarr/archive/${VERSION}.tar.gz" | tar xzf - -C "/build" --strip-components=1 && \
-    cd /build && \
-    bun install --frozen-lockfile && \
-    bun run build && \
-    rm -rf node_modules && \
-    bun install --production --frozen-lockfile
+RUN bun run prepare && bun run build
 
+FROM bun AS production-dependencies
+WORKDIR /build
+COPY --from=dependencies /build/package.json /build/bun.lock /build/bunfig.toml ./
+RUN bun install --production --frozen-lockfile
 
-FROM ${UPSTREAM_IMAGE}:${UPSTREAM_TAG_SHA}
+FROM ${UPSTREAM_IMAGE}@${UPSTREAM_DIGEST_AMD64}
 ARG IMAGE_STATS
-ENV IMAGE_STATS=${IMAGE_STATS} PORT=3000 WEBUI_PORTS="3000/tcp,3000/udp"
+ARG VERSION
+ENV IMAGE_STATS=${IMAGE_STATS} PORT=3000 WEBUI_PORTS="3000/tcp,3000/udp" \
+    NODE_ENV=production COMMIT_TAG=${VERSION}
 EXPOSE ${PORT}
 
-RUN apk add --no-cache curl unzip && \
-    curl -fsSL https://bun.sh/install | bash && \
-    mv /root/.bun/bin/bun /usr/local/bin/ && \
-    rm -rf /root/.bun
-
+COPY --from=bun /usr/local/bin/bun /usr/local/bin/bun
 COPY --from=builder /build/build "${APP_DIR}/build"
 COPY --from=builder /build/drizzle "${APP_DIR}/drizzle"
-COPY --from=builder /build/node_modules "${APP_DIR}/node_modules"
+COPY --from=production-dependencies /build/node_modules "${APP_DIR}/node_modules"
 COPY --from=builder /build/package.json "${APP_DIR}/package.json"
 
 RUN mkdir -p "${CONFIG_DIR}/data" && \
