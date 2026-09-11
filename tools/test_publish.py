@@ -18,13 +18,22 @@ class PublishTests(unittest.TestCase):
                       "revision": "a" * 40, "tags": ["alpinevpn"]}
             (folder / "metadata.json").write_text(json.dumps(record))
             for name in ("image.tar", "result.txt", "packages.txt"):
-                (folder / name).write_text("fixture")
+                (folder / name).write_text("PASS: fixture" if name == "result.txt" else "fixture")
+            (folder / "runtime-result.json").write_text(json.dumps({"passed": True, "architecture": arch}))
 
     def validate(self):
         return validate(self.root, "edbfi/base-image", "alpinevpn")
 
     def test_complete_pair(self):
         self.assertEqual(self.validate()["revision"], "a" * 40)
+
+    def test_failed_runtime_rejected(self):
+        (self.root / "alpinevpn-amd64/runtime-result.json").write_text(json.dumps({"passed": False, "architecture": "amd64"}))
+        with self.assertRaises(ValueError): self.validate()
+
+    def test_failed_smoke_rejected(self):
+        (self.root / "alpinevpn-amd64/result.txt").write_text("FAIL")
+        with self.assertRaises(ValueError): self.validate()
 
     def test_missing_smoke_evidence(self):
         (self.root / "alpinevpn-amd64/result.txt").unlink()

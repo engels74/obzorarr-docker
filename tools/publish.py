@@ -27,6 +27,11 @@ def validate(evidence, repository, branch):
         for name in ("image.tar", "result.txt", "packages.txt"):
             if not (folder / name).is_file() or (folder / name).stat().st_size == 0:
                 raise ValueError("Missing tested artifact: " + name)
+        result = json.loads((folder / "runtime-result.json").read_text())
+        if result.get("passed") is not True or result.get("architecture") != arch:
+            raise ValueError("Runtime acceptance did not pass for this architecture")
+        if not (folder / "result.txt").read_text().startswith("PASS:"):
+            raise ValueError("Smoke result is not successful")
         records.append(data)
     if any(records[0][k] != records[1][k] for k in ("revision", "tags")):
         raise ValueError("Architecture revisions or tags differ")
@@ -64,6 +69,8 @@ if __name__ == "__main__":
         run(["docker", "tag", "local-validation:" + opts.branch + "-" + arch, tag])
         run(["docker", "push", tag])
         temporary.append(tag)
+    live = json.loads(subprocess.check_output(["gh", "api", f"repos/{opts.repository}/branches/{opts.branch}"], text=True))
+    validate_publication(data, opts.branch, live, runs, os.environ.get("GITHUB_REF"), os.environ.get("GITHUB_SHA"))
     command = ["docker", "buildx", "imagetools", "create"]
     for tag in data["tags"]:
         command.extend(["--tag", registry + ":" + tag])
