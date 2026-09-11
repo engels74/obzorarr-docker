@@ -68,7 +68,7 @@ jobs:
           build-args: ${{ steps.metadata.outputs.build_args }}
           labels: |
             org.opencontainers.image.source=https://github.com/${{ github.repository }}
-            org.opencontainers.image.documentation=https://web.edb.fi/containers/${{ github.event.repository.name }}
+            org.opencontainers.image.documentation=https://web.edb.fi/containers/obzorarr/
             org.opencontainers.image.vendor=edbfi
             org.opencontainers.image.revision=${{ steps.metadata.outputs.revision }}
           cache-from: type=gha,scope=${{ inputs.image }}-${{ matrix.arch }}
